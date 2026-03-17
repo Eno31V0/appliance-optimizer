@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans JP',sans-serif;color:#1e293b;line-height:1.6;background:#fff;-webkit-text-size-adjust:100%}
+body{font-family:'Noto Sans JP',sans-serif;color:#1e293b;line-height:1.6;background:#fff;-webkit-text-size-adjust:100%;overflow-x:hidden}
 input:focus,select:focus,button:focus-visible{outline:2px solid #2563eb;outline-offset:1px}
 input[type="number"]::-webkit-inner-spin-button{opacity:1}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -25,26 +25,22 @@ input[type="number"]::-webkit-inner-spin-button{opacity:1}
 .badge{font-size:12px;font-weight:600;color:#2563eb;background:#eff6ff;padding:4px 10px;border-radius:20px}
 .hint{font-size:11px;color:#94a3b8;margin-bottom:14px;padding-left:4px}
 
-/* Menu */
 .menu-wrap{position:relative}
 .menu-btn{width:32px;height:32px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748b}
 .dropdown{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:50;min-width:200px;overflow:hidden;animation:fadeIn .15s ease-out;display:none}
 .dropdown.open{display:block}
 .dm{display:flex;align-items:center;gap:8px;padding:10px 14px;border:none;background:transparent;width:100%;text-align:left;font-size:13px;font-family:'Noto Sans JP',sans-serif;color:#334155;cursor:pointer;transition:background .1s ease}
-.dm:hover{background:#f1f5f9}
-.dm.dg{color:#dc2626}.dm.dg:hover{background:#fef2f2}
+.dm:hover{background:#f1f5f9}.dm.dg{color:#dc2626}.dm.dg:hover{background:#fef2f2}
 .dm-sep{height:1px;background:#e2e8f0;margin:2px 0}
 
-/* Tabs */
 .tabs{display:flex;gap:4px;margin-bottom:16px;background:#f1f5f9;border-radius:10px;padding:3px}
 .tab{flex:1;padding:8px 12px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans JP',sans-serif;background:transparent;color:#64748b;transition:all .15s ease}
 .tab:hover{background:#e2e8f0}.tab.on{background:#1e293b;color:#fff}.tab.on:hover{background:#334155}
 
-/* Table */
 .table-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:10px;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{padding:10px 12px;text-align:center;font-size:12px;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0;background:#f8fafc;white-space:nowrap}
-th.fixed{text-align:left;position:sticky;left:0;z-index:1;background:#f8fafc}
+th.fixed{text-align:left;position:sticky;left:0;z-index:2;background:#f8fafc}
 td.name{padding:8px 12px;border-bottom:1px solid #f1f5f9;font-size:13px;position:sticky;left:0;background:#fff;z-index:1;white-space:nowrap}
 td.price{padding:6px 8px;border-bottom:1px solid #f1f5f9;text-align:center;cursor:pointer;min-width:90px;transition:background .15s ease}
 td.price:hover{background:#f8fafc}
@@ -54,17 +50,30 @@ td.price.best{background:#f0fdf4}
 tr.add-row{transition:all .15s ease}tr.add-row:hover{background:#f8fafc}
 .mono{font-family:'JetBrains Mono',monospace}
 
-/* Checkbox */
 .cb{width:18px;height:18px;border-radius:4px;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s ease;flex-shrink:0}
 .cb.on{background:#2563eb;border-color:#2563eb;color:#fff}.cb:hover{border-color:#2563eb}
 
-/* Icon buttons */
 .ib{display:inline-flex;align-items:center;justify-content:center;padding:4px;border-radius:4px;border:none;background:transparent;cursor:pointer;color:#94a3b8;transition:all .15s ease}
 .ib:hover{color:#ef4444;background:#fef2f2}.ib.add{color:#2563eb}.ib.add:hover{background:#eff6ff}
 
-/* Bundle */
+/* Drag handle */
+.grip{display:inline-flex;align-items:center;justify-content:center;cursor:grab;color:#cbd5e1;padding:2px;border-radius:3px;touch-action:none;flex-shrink:0;transition:color .15s ease}
+.grip:hover{color:#94a3b8}
+.grip:active{cursor:grabbing}
+.grip-h{cursor:grab;touch-action:none}
+.grip-h:active{cursor:grabbing}
+
+/* Drag ghost styles */
+.dragging-row{opacity:.4}
+.drag-over-top{box-shadow:inset 0 2px 0 0 #2563eb}
+.drag-over-bottom{box-shadow:inset 0 -2px 0 0 #2563eb}
+.drag-over-left{box-shadow:inset 2px 0 0 0 #2563eb}
+.drag-over-right{box-shadow:inset -2px 0 0 0 #2563eb}
+th.dragging-col,td.dragging-col{opacity:.4}
+
 .bundle-card{border:1px solid #e2e8f0;border-radius:10px;padding:14px;background:#fff;transition:box-shadow .15s ease}
 .bundle-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.bundle-card.dragging-row{opacity:.4}
 .b-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .b-name{padding:4px 8px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;font-weight:600;font-family:'Noto Sans JP',sans-serif;width:140px}
 .b-price{padding:4px 8px;border:1px solid #e2e8f0;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:right;width:100px}
@@ -75,11 +84,9 @@ tr.add-row{transition:all .15s ease}tr.add-row:hover{background:#f8fafc}
 .add-bundle-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:10px;border:1px dashed #cbd5e1;border-radius:10px;background:transparent;font-size:13px;font-weight:500;color:#64748b;cursor:pointer;font-family:'Noto Sans JP',sans-serif;margin-top:12px}
 .empty{text-align:center;padding:32px 16px;border:1px dashed #e2e8f0;border-radius:10px;margin-bottom:12px}
 
-/* Solve button */
 .solve-btn{width:100%;padding:14px;background:#1e293b;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;letter-spacing:0.02em;margin-bottom:16px}
 .solve-btn:active{background:#334155}
 
-/* Result */
 .result{border:2px solid #1e293b;border-radius:12px;padding:16px;background:#fafbfc;animation:fadeIn .3s ease-out}
 .r-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .r-lbl{font-size:13px;font-weight:600;color:#475569}
@@ -88,12 +95,10 @@ tr.add-row{transition:all .15s ease}tr.add-row:hover{background:#f8fafc}
 .r-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:#fff;border-radius:8px;border:1px solid #f1f5f9;margin-bottom:6px}
 .r-badge{font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;background:#f1f5f9;color:#64748b;flex-shrink:0}
 
-/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;border:1px solid;font-size:13px;font-weight:500;font-family:'Noto Sans JP',sans-serif;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.08);white-space:nowrap;animation:toastIn .25s ease-out}
 .toast.ok{background:#f0fdf4;border-color:#86efac;color:#166534}
 .toast.err{background:#fef2f2;border-color:#fca5a5;color:#b91c1c}
 
-/* Modal */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;animation:fadeIn .15s ease-out}
 .modal-box{background:#fff;border-radius:14px;padding:20px;max-width:440px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.15)}
 .modal-url{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;font-size:11px;font-family:'JetBrains Mono',monospace;word-break:break-all;color:#475569;max-height:80px;overflow:auto;margin-bottom:14px;line-height:1.5}
@@ -113,370 +118,402 @@ tr.add-row{transition:all .15s ease}tr.add-row:hover{background:#f8fafc}
 <body>
 <div id="app" class="container"></div>
 <script>
-// ===== State =====
-const SKEY = "appliance-optimizer-v1";
-let state, result = null, editingCell = null, tab = "table", menuOpen = false, toastTimer = null, shareModal = false, shareUrl = "";
+// ===================== State =====================
+const SKEY="appliance-optimizer-v1";
+let S,result=null,editingCell=null,tab="table",menuOpen=false,toastTimer=null,shareModal=false,shareUrl="";
 
-function gid() { return Math.random().toString(36).substr(2, 9); }
-function yen(n) { return n == null ? "—" : "¥" + n.toLocaleString(); }
+function gid(){return Math.random().toString(36).substr(2,9)}
+function yen(n){return n==null?"—":"¥"+n.toLocaleString()}
 
-function defaultState() {
-  return {
-    appliances: ["冷蔵庫","洗濯機","電子レンジ"].map(n => ({ id: gid(), name: n, checked: true })),
-    stores: ["ビックカメラ","ヤマダ電機","Amazon"].map(n => ({ id: gid(), name: n })),
-    priceTable: {},
-    bundles: []
-  };
+function defState(){return{appliances:["冷蔵庫","洗濯機","電子レンジ"].map(n=>({id:gid(),name:n,checked:true})),stores:["ビックカメラ","ヤマダ電機","Amazon"].map(n=>({id:gid(),name:n})),priceTable:{},bundles:[]}}
+
+function loadState(){
+  try{const h=location.hash;if(h&&h.startsWith("#data=")){const d=JSON.parse(decodeURIComponent(escape(atob(h.slice(6)))));if(d.appliances&&d.stores){history.replaceState(null,"",location.pathname+location.search);localStorage.setItem(SKEY,JSON.stringify(d));return d;}}}catch{}
+  try{const s=localStorage.getItem(SKEY);if(s){const d=JSON.parse(s);if(d.appliances)return d;}}catch{}
+  return defState();
+}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify({appliances:S.appliances,stores:S.stores,priceTable:S.priceTable,bundles:S.bundles}));}catch{}}
+S=loadState();
+
+// ===================== Solver =====================
+function solve_(){
+  const ch=S.appliances.filter(a=>a.checked),n=ch.length;
+  if(n===0)return{total:0,picks:[],uncovered:[]};
+  if(n>20)return{total:null,picks:[],uncovered:ch.map(a=>a.name)};
+  const idx={};ch.forEach((a,i)=>idx[a.id]=i);
+  const full=(1<<n)-1,opts=[];
+  ch.forEach((a,i)=>{const bit=1<<i;Object.entries(S.priceTable[a.id]||{}).forEach(([sid,p])=>{if(p>0)opts.push({mask:bit,cost:p,storeId:sid,appIds:[a.id],type:"single"});});});
+  S.bundles.forEach(b=>{if(!b.price||b.price<=0)return;let mask=0;const cov=[];b.items.forEach(it=>{if(it.applianceId!=="__placeholder__"&&idx[it.applianceId]!==undefined){mask|=1<<idx[it.applianceId];cov.push(it.applianceId);}});if(mask>0)opts.push({mask,cost:b.price,label:b.name,type:"bundle",appIds:cov});});
+  const INF=1e15,dp=Array(full+1).fill(INF),fr=Array(full+1).fill(-1),fm=Array(full+1).fill(0);dp[0]=0;
+  for(let s=0;s<=full;s++){if(dp[s]===INF)continue;for(let oi=0;oi<opts.length;oi++){const o=opts[oi],ns=s|o.mask;if(dp[s]+o.cost<dp[ns]){dp[ns]=dp[s]+o.cost;fr[ns]=oi;fm[ns]=s;}}}
+  if(dp[full]===INF){const uc=[];ch.forEach((a,i)=>{if(!opts.some(o=>o.mask&(1<<i)))uc.push(a.name);});return{total:null,picks:[],uncovered:uc};}
+  const picks=[];let cur=full;while(cur>0){picks.push(opts[fr[cur]]);cur=fm[cur];}return{total:dp[full],picks,uncovered:[]};
 }
 
-function loadState() {
-  // 1. URL hash
-  try {
-    const h = location.hash;
-    if (h && h.startsWith("#data=")) {
-      const d = JSON.parse(decodeURIComponent(escape(atob(h.slice(6)))));
-      if (d.appliances && d.stores) {
-        history.replaceState(null, "", location.pathname + location.search);
-        localStorage.setItem(SKEY, JSON.stringify(d));
-        return d;
-      }
-    }
-  } catch {}
-  // 2. localStorage
-  try { const s = localStorage.getItem(SKEY); if (s) { const d = JSON.parse(s); if (d.appliances) return d; } } catch {}
-  return defaultState();
+// ===================== Export (iOS-safe) =====================
+async function doExport(){
+  const json=JSON.stringify({appliances:S.appliances,stores:S.stores,priceTable:S.priceTable,bundles:S.bundles,_exported:new Date().toISOString()},null,2);
+  const fname="家電最安値_"+new Date().toISOString().slice(0,10)+".json";
+  const blob=new Blob([json],{type:"application/json"});
+  const file=new File([blob],fname,{type:"application/json"});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:fname});showToast("共有メニューから保存先を選択してください");return;}catch(e){if(e.name==="AbortError")return;}}
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);showToast("JSONファイルを保存しました");
 }
-
-function saveState() {
-  try { localStorage.setItem(SKEY, JSON.stringify({ appliances: state.appliances, stores: state.stores, priceTable: state.priceTable, bundles: state.bundles })); } catch {}
+function doImport(e){
+  const f=e.target.files?.[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(!d.appliances||!d.stores)throw 0;S.appliances=d.appliances;S.stores=d.stores;S.priceTable=d.priceTable||{};S.bundles=d.bundles||[];result=null;save();render();showToast("データを復元しました");}catch{showToast("ファイル形式が不正です",true);}};
+  r.readAsText(f);e.target.value="";
 }
+function doShareLink(){const enc=btoa(unescape(encodeURIComponent(JSON.stringify({appliances:S.appliances,stores:S.stores,priceTable:S.priceTable,bundles:S.bundles}))));shareUrl=location.href.split("#")[0]+"#data="+enc;shareModal=true;menuOpen=false;render();}
+async function copyShareUrl(){try{await navigator.clipboard.writeText(shareUrl);}catch{const t=document.createElement("textarea");t.value=shareUrl;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();document.execCommand("copy");document.body.removeChild(t);}showToast("URLをコピーしました");shareModal=false;render();}
+function doReset(){if(!confirm("すべてのデータを初期状態に戻しますか？"))return;S=defState();result=null;try{localStorage.removeItem(SKEY);}catch{}menuOpen=false;render();showToast("初期化しました");}
+function showToast(msg,isErr){if(toastTimer)clearTimeout(toastTimer);const el=document.getElementById("toast");el.textContent=msg;el.className="toast "+(isErr?"err":"ok");el.style.display="block";toastTimer=setTimeout(()=>{el.style.display="none";},2600);}
 
-state = loadState();
+// ===================== Drag & Drop =====================
+let dragType=null,dragIdx=null,dragOverIdx=null;
 
-// ===== Solver =====
-function solve() {
-  const ch = state.appliances.filter(a => a.checked);
-  const n = ch.length;
-  if (n === 0) return { total: 0, picks: [], uncovered: [] };
-  if (n > 20) return { total: null, picks: [], uncovered: ch.map(a => a.name) };
-  const idx = {}; ch.forEach((a, i) => idx[a.id] = i);
-  const full = (1 << n) - 1, opts = [];
-  ch.forEach((a, i) => {
-    const bit = 1 << i;
-    Object.entries(state.priceTable[a.id] || {}).forEach(([sid, p]) => { if (p > 0) opts.push({ mask: bit, cost: p, storeId: sid, appIds: [a.id], type: "single" }); });
-  });
-  state.bundles.forEach(b => {
-    if (!b.price || b.price <= 0) return;
-    let mask = 0; const cov = [];
-    b.items.forEach(it => { if (it.applianceId !== "__placeholder__" && idx[it.applianceId] !== undefined) { mask |= 1 << idx[it.applianceId]; cov.push(it.applianceId); } });
-    if (mask > 0) opts.push({ mask, cost: b.price, label: b.name, type: "bundle", appIds: cov });
-  });
-  const INF = 1e15, dp = Array(full + 1).fill(INF), fr = Array(full + 1).fill(-1), fm = Array(full + 1).fill(0);
-  dp[0] = 0;
-  for (let s = 0; s <= full; s++) { if (dp[s] === INF) continue; for (let oi = 0; oi < opts.length; oi++) { const o = opts[oi], ns = s | o.mask; if (dp[s] + o.cost < dp[ns]) { dp[ns] = dp[s] + o.cost; fr[ns] = oi; fm[ns] = s; } } }
-  if (dp[full] === INF) { const uc = []; ch.forEach((a, i) => { if (!opts.some(o => o.mask & (1 << i))) uc.push(a.name); }); return { total: null, picks: [], uncovered: uc }; }
-  const picks = []; let cur = full; while (cur > 0) { picks.push(opts[fr[cur]]); cur = fm[cur]; }
-  return { total: dp[full], picks, uncovered: [] };
+function arrMove(arr,from,to){if(from===to)return;const item=arr.splice(from,1)[0];arr.splice(to,0,item);}
+
+// Row drag (appliances / bundles)
+function rowDragStart(type,idx,e){
+  dragType=type;dragIdx=idx;
+  if(e.dataTransfer){e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain","");}
+  const el=e.currentTarget.closest(type==="bundle"?".bundle-card":"tr");
+  if(el)setTimeout(()=>el.classList.add("dragging-row"),0);
 }
-
-// ===== Export (iOS-safe) =====
-async function doExport() {
-  const json = JSON.stringify({ appliances: state.appliances, stores: state.stores, priceTable: state.priceTable, bundles: state.bundles, _exported: new Date().toISOString() }, null, 2);
-  const fname = "家電最安値_" + new Date().toISOString().slice(0, 10) + ".json";
-  const blob = new Blob([json], { type: "application/json" });
-  const file = new File([blob], fname, { type: "application/json" });
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try { await navigator.share({ files: [file], title: fname }); showToast("共有メニューから保存先を選択してください"); return; } catch (e) { if (e.name === "AbortError") return; }
+function rowDragOver(idx,e){
+  e.preventDefault();if(dragIdx===null||dragIdx===idx)return;
+  dragOverIdx=idx;
+  // Visual indicator
+  const el=e.currentTarget;
+  el.classList.remove("drag-over-top","drag-over-bottom");
+  const rect=el.getBoundingClientRect();
+  const mid=rect.top+rect.height/2;
+  el.classList.add(e.clientY<mid?"drag-over-top":"drag-over-bottom");
+}
+function rowDragLeave(e){e.currentTarget.classList.remove("drag-over-top","drag-over-bottom");}
+function rowDragEnd(type){
+  if(dragIdx!==null&&dragOverIdx!==null&&dragIdx!==dragOverIdx){
+    if(type==="appliance")arrMove(S.appliances,dragIdx,dragOverIdx);
+    else if(type==="bundle")arrMove(S.bundles,dragIdx,dragOverIdx);
+    save();
   }
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href = url; a.download = fname;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-  showToast("JSONファイルを保存しました");
+  dragType=null;dragIdx=null;dragOverIdx=null;render();
 }
 
-function doImport(e) {
-  const f = e.target.files?.[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = ev => {
-    try {
-      const d = JSON.parse(ev.target.result);
-      if (!d.appliances || !d.stores) throw 0;
-      state.appliances = d.appliances; state.stores = d.stores; state.priceTable = d.priceTable || {}; state.bundles = d.bundles || [];
-      result = null; saveState(); render(); showToast("データを復元しました");
-    } catch { showToast("ファイル形式が不正です", true); }
-  };
-  r.readAsText(f); e.target.value = "";
+// Column drag (stores)
+let colDragIdx=null,colOverIdx=null;
+function colDragStart(idx,e){
+  colDragIdx=idx;
+  if(e.dataTransfer){e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain","");}
+}
+function colDragOver(idx,e){
+  e.preventDefault();if(colDragIdx===null||colDragIdx===idx)return;
+  colOverIdx=idx;
+}
+function colDragEnd(){
+  if(colDragIdx!==null&&colOverIdx!==null&&colDragIdx!==colOverIdx){
+    arrMove(S.stores,colDragIdx,colOverIdx);save();
+  }
+  colDragIdx=null;colOverIdx=null;render();
 }
 
-function doShareLink() {
-  const enc = btoa(unescape(encodeURIComponent(JSON.stringify({ appliances: state.appliances, stores: state.stores, priceTable: state.priceTable, bundles: state.bundles }))));
-  shareUrl = location.href.split("#")[0] + "#data=" + enc;
-  shareModal = true; menuOpen = false; render();
-}
+// Touch drag helpers for mobile
+let touchDragEl=null,touchStartY=0,touchStartX=0,touchType=null,touchIdx=null,touchClone=null,touchTargets=[];
 
-async function copyShareUrl() {
-  try { await navigator.clipboard.writeText(shareUrl); } catch { const t = document.createElement("textarea"); t.value = shareUrl; t.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(t); t.select(); document.execCommand("copy"); document.body.removeChild(t); }
-  showToast("URLをコピーしました"); shareModal = false; render();
+function touchStart(type,idx,e){
+  const touch=e.touches[0];
+  touchType=type;touchIdx=idx;touchStartY=touch.clientY;touchStartX=touch.clientX;
+  touchDragEl=e.currentTarget.closest(type==="bundle"?".bundle-card":type==="col"?"th":"tr");
+  // Collect all targets for hit-testing
+  if(type==="col"){
+    touchTargets=[...document.querySelectorAll("[data-col-idx]")];
+  } else if(type==="appliance"){
+    touchTargets=[...document.querySelectorAll("[data-row-idx]")];
+  } else if(type==="bundle"){
+    touchTargets=[...document.querySelectorAll("[data-bun-idx]")];
+  }
 }
-
-function doReset() {
-  if (!confirm("すべてのデータを初期状態に戻しますか？")) return;
-  state = defaultState(); result = null;
-  try { localStorage.removeItem(SKEY); } catch {}
-  menuOpen = false; render(); showToast("初期化しました");
+function touchMove(e){
+  if(touchIdx===null)return;
+  e.preventDefault();
+  const touch=e.touches[0];
+  if(!touchClone&&(Math.abs(touch.clientY-touchStartY)>5||Math.abs(touch.clientX-touchStartX)>5)){
+    if(touchDragEl){touchDragEl.style.opacity="0.4";}
+  }
+  // Hit test
+  touchTargets.forEach(el=>{el.classList.remove("drag-over-top","drag-over-bottom","drag-over-left","drag-over-right");});
+  const hit=document.elementFromPoint(touch.clientX,touch.clientY);
+  if(!hit)return;
+  const target=hit.closest("[data-col-idx],[data-row-idx],[data-bun-idx]");
+  if(!target)return;
+  const targetIdx=parseInt(target.dataset.colIdx??target.dataset.rowIdx??target.dataset.bunIdx);
+  if(isNaN(targetIdx)||targetIdx===touchIdx)return;
+  if(touchType==="col"){
+    const rect=target.getBoundingClientRect();
+    target.classList.add(touch.clientX<rect.left+rect.width/2?"drag-over-left":"drag-over-right");
+  } else {
+    const rect=target.getBoundingClientRect();
+    target.classList.add(touch.clientY<rect.top+rect.height/2?"drag-over-top":"drag-over-bottom");
+  }
+  dragOverIdx=targetIdx;colOverIdx=targetIdx;
 }
-
-function showToast(msg, isErr) {
-  if (toastTimer) clearTimeout(toastTimer);
-  const el = document.getElementById("toast");
-  el.textContent = msg; el.className = "toast " + (isErr ? "err" : "ok"); el.style.display = "block";
-  toastTimer = setTimeout(() => { el.style.display = "none"; }, 2600);
+function touchEnd(){
+  if(touchIdx!==null){
+    const fromIdx=touchIdx;
+    const toIdx=touchType==="col"?colOverIdx:dragOverIdx;
+    if(toIdx!==null&&fromIdx!==toIdx){
+      if(touchType==="col")arrMove(S.stores,fromIdx,toIdx);
+      else if(touchType==="appliance")arrMove(S.appliances,fromIdx,toIdx);
+      else if(touchType==="bundle")arrMove(S.bundles,fromIdx,toIdx);
+      save();
+    }
+  }
+  if(touchDragEl)touchDragEl.style.opacity="";
+  touchTargets.forEach(el=>{el.classList.remove("drag-over-top","drag-over-bottom","drag-over-left","drag-over-right");});
+  touchDragEl=null;touchIdx=null;touchType=null;touchClone=null;dragOverIdx=null;colOverIdx=null;touchTargets=[];
+  render();
 }
+document.addEventListener("touchmove",touchMove,{passive:false});
+document.addEventListener("touchend",touchEnd);
+document.addEventListener("touchcancel",touchEnd);
 
-// ===== Render =====
-function h(tag, attrs, ...children) {
-  const el = document.createElement(tag);
-  if (attrs) Object.entries(attrs).forEach(([k, v]) => {
-    if (k === "style" && typeof v === "object") Object.assign(el.style, v);
-    else if (k.startsWith("on")) el.addEventListener(k.slice(2).toLowerCase(), v);
-    else if (k === "className") el.className = v;
-    else if (k === "htmlFor") el.setAttribute("for", v);
-    else el.setAttribute(k, v);
+// ===================== DOM Helpers =====================
+function h(tag,attrs,...children){
+  const el=document.createElement(tag);
+  if(attrs)Object.entries(attrs).forEach(([k,v])=>{
+    if(k==="style"&&typeof v==="object")Object.assign(el.style,v);
+    else if(k.startsWith("on"))el.addEventListener(k.slice(2).toLowerCase(),v);
+    else if(k==="className")el.className=v;
+    else el.setAttribute(k,v);
   });
-  children.flat(Infinity).forEach(c => { if (c == null) return; el.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  children.flat(Infinity).forEach(c=>{if(c==null||c===false)return;el.appendChild(typeof c==="string"?document.createTextNode(c):c);});
   return el;
 }
+function svg_(html){const d=document.createElement("span");d.innerHTML=html;return d.firstElementChild||d;}
+const iPlus=()=>svg_('<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>');
+const iTrash=()=>svg_('<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h10M5 4V3a1 1 0 011-1h2a1 1 0 011 1v1M11 4v7a1 1 0 01-1 1H4a1 1 0 01-1-1V4"/></svg>');
+const iCheck=()=>svg_('<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>');
+const iCalc=()=>svg_('<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="14" height="14" rx="2"/><line x1="2" y1="7" x2="16" y2="7"/><line x1="9" y1="7" x2="9" y2="16"/><line x1="5" y1="4" x2="5" y2="5"/><line x1="9" y1="4" x2="13" y2="4"/></svg>');
+const iDl=()=>svg_('<svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 2v8M4 7.5l3.5 3.5L11 7.5M2.5 12.5h10"/></svg>');
+const iUl=()=>svg_('<svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 10V2M4 4.5L7.5 1 11 4.5M2.5 12.5h10"/></svg>');
+const iSave=()=>svg_('<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 12H2.5a1 1 0 01-1-1V2a1 1 0 011-1h6l3 3v7a1 1 0 01-1 1z"/><path d="M9 12V7.5H4V12"/><path d="M4 1v3h4"/></svg>');
+const iReset=()=>svg_('<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2v3.5h3.5"/><path d="M2.1 8a5 5 0 104-5.9L1.5 5.5"/></svg>');
+const iLink=()=>svg_('<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7.5a3 3 0 004.2.4l1.5-1.5a3 3 0 00-4.2-4.2L6.3 3.3"/><path d="M8 6.5a3 3 0 00-4.2-.4L2.3 7.6a3 3 0 004.2 4.2l1.1-1.1"/></svg>');
+const iGrip=()=>svg_('<svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="3" cy="3" r="1.3"/><circle cx="7" cy="3" r="1.3"/><circle cx="3" cy="7" r="1.3"/><circle cx="7" cy="7" r="1.3"/><circle cx="3" cy="11" r="1.3"/><circle cx="7" cy="11" r="1.3"/></svg>');
+const iGripH=()=>svg_('<svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><circle cx="3" cy="3" r="1.3"/><circle cx="7" cy="3" r="1.3"/><circle cx="11" cy="3" r="1.3"/><circle cx="3" cy="7" r="1.3"/><circle cx="7" cy="7" r="1.3"/><circle cx="11" cy="7" r="1.3"/></svg>');
 
-function svg(html) { const d = document.createElement("span"); d.innerHTML = html; return d.firstElementChild || d; }
-const iPlus = () => svg('<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/></svg>');
-const iTrash = () => svg('<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h10M5 4V3a1 1 0 011-1h2a1 1 0 011 1v1M11 4v7a1 1 0 01-1 1H4a1 1 0 01-1-1V4"/></svg>');
-const iCheck = () => svg('<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>');
-const iCalc = () => svg('<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="14" height="14" rx="2"/><line x1="2" y1="7" x2="16" y2="7"/><line x1="9" y1="7" x2="9" y2="16"/><line x1="5" y1="4" x2="5" y2="5"/><line x1="9" y1="4" x2="13" y2="4"/></svg>');
-const iDl = () => svg('<svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 2v8M4 7.5l3.5 3.5L11 7.5M2.5 12.5h10"/></svg>');
-const iUl = () => svg('<svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 10V2M4 4.5L7.5 1 11 4.5M2.5 12.5h10"/></svg>');
-const iSave = () => svg('<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 12H2.5a1 1 0 01-1-1V2a1 1 0 011-1h6l3 3v7a1 1 0 01-1 1z"/><path d="M9 12V7.5H4V12"/><path d="M4 1v3h4"/></svg>');
-const iReset = () => svg('<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2v3.5h3.5"/><path d="M2.1 8a5 5 0 104-5.9L1.5 5.5"/></svg>');
-const iLink = () => svg('<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7.5a3 3 0 004.2.4l1.5-1.5a3 3 0 00-4.2-4.2L6.3 3.3"/><path d="M8 6.5a3 3 0 00-4.2-.4L2.3 7.6a3 3 0 004.2 4.2l1.1-1.1"/></svg>');
-
-function render() {
-  const app = document.getElementById("app");
-  app.innerHTML = "";
-
-  const cc = state.appliances.filter(a => a.checked).length;
-
-  // Compute best prices
-  const bestP = {};
-  state.appliances.forEach(a => {
-    let mn = Infinity, ms = null;
-    state.stores.forEach(s => { const p = Number((state.priceTable[a.id] || {})[s.id] || 0); if (p > 0 && p < mn) { mn = p; ms = s.id; } });
-    bestP[a.id] = mn < Infinity ? { storeId: ms } : null;
-  });
+// ===================== Render =====================
+function render(){
+  const app=document.getElementById("app");app.innerHTML="";
+  const cc=S.appliances.filter(a=>a.checked).length;
+  const bestP={};
+  S.appliances.forEach(a=>{let mn=Infinity,ms=null;S.stores.forEach(s=>{const p=Number((S.priceTable[a.id]||{})[s.id]||0);if(p>0&&p<mn){mn=p;ms=s.id;}});bestP[a.id]=mn<Infinity?{storeId:ms}:null;});
 
   // Header
-  const hdr = h("div", { className: "header" },
-    h("div", { className: "h-left" },
-      h("div", { className: "h-icon" }, iCalc()),
-      h("div", null, h("h1", { className: "h-title" }, "家電コスト最適化"), h("p", { className: "h-sub" }, "最安の購入組み合わせを自動計算"))
-    ),
-    h("div", { className: "h-right" },
-      h("div", { className: "badge" }, cc + "品目"),
-      h("div", { className: "menu-wrap" },
-        h("button", { className: "menu-btn", onClick: () => { menuOpen = !menuOpen; render(); } }, iSave()),
-        h("div", { className: "dropdown" + (menuOpen ? " open" : "") },
-          h("button", { className: "dm", onClick: () => { menuOpen = false; render(); doExport(); } }, iDl(), "JSON保存"),
-          h("button", { className: "dm", onClick: () => { document.getElementById("fimport").click(); menuOpen = false; render(); } }, iUl(), "JSONから復元"),
-          h("button", { className: "dm", onClick: doShareLink }, iLink(), "共有リンク生成"),
-          h("div", { className: "dm-sep" }),
-          h("button", { className: "dm dg", onClick: doReset }, iReset(), "初期化")
+  app.appendChild(h("div",{className:"header"},
+    h("div",{className:"h-left"},h("div",{className:"h-icon"},iCalc()),h("div",null,h("h1",{className:"h-title"},"家電コスト最適化"),h("p",{className:"h-sub"},"最安の購入組み合わせを自動計算"))),
+    h("div",{className:"h-right"},h("div",{className:"badge"},cc+"品目"),
+      h("div",{className:"menu-wrap"},
+        h("button",{className:"menu-btn",onClick:()=>{menuOpen=!menuOpen;render();}},iSave()),
+        h("div",{className:"dropdown"+(menuOpen?" open":"")},
+          h("button",{className:"dm",onClick:()=>{menuOpen=false;render();doExport();}},iDl(),"JSON保存"),
+          h("button",{className:"dm",onClick:()=>{document.getElementById("fimport").click();menuOpen=false;render();}},iUl(),"JSONから復元"),
+          h("button",{className:"dm",onClick:doShareLink},iLink(),"共有リンク生成"),
+          h("div",{className:"dm-sep"}),
+          h("button",{className:"dm dg",onClick:doReset},iReset(),"初期化")
         )
       )
     )
-  );
-  app.appendChild(hdr);
-  app.appendChild(h("p", { className: "hint" }, "自動保存ON — ページを閉じても復元されます"));
+  ));
+  app.appendChild(h("p",{className:"hint"},"自動保存ON — ⠿ をドラッグして並び替え"));
 
   // Tabs
-  const tabs = h("div", { className: "tabs" },
-    h("button", { className: "tab" + (tab === "table" ? " on" : ""), onClick: () => { tab = "table"; render(); } }, "価格テーブル"),
-    h("button", { className: "tab" + (tab === "bundle" ? " on" : ""), onClick: () => { tab = "bundle"; render(); } }, "まとめ売り (" + state.bundles.length + ")")
-  );
-  app.appendChild(tabs);
+  app.appendChild(h("div",{className:"tabs"},
+    h("button",{className:"tab"+(tab==="table"?" on":""),onClick:()=>{tab="table";render();}},"価格テーブル"),
+    h("button",{className:"tab"+(tab==="bundle"?" on":""),onClick:()=>{tab="bundle";render();}},"まとめ売り ("+S.bundles.length+")")
+  ));
 
-  // Table tab
-  if (tab === "table") {
-    const sec = h("div", { className: "section" });
-    const tw = h("div", { className: "table-wrap" });
-    const tbl = h("table");
-    // thead
-    const thead = h("thead");
-    const hr = h("tr");
-    hr.appendChild(h("th", { className: "fixed", style: { minWidth: "140px" } }, h("span", { style: { fontSize: "11px", color: "#94a3b8", fontWeight: "400" } }, "家電 ＼ 店舗")));
-    state.stores.forEach(s => {
-      const del = h("button", { className: "ib", onClick: () => { state.stores = state.stores.filter(x => x.id !== s.id); const np = {}; Object.entries(state.priceTable).forEach(([k, v]) => { const c = { ...v }; delete c[s.id]; np[k] = c; }); state.priceTable = np; saveState(); render(); } }, iTrash());
-      hr.appendChild(h("th", { style: { minWidth: "100px" } }, h("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" } }, h("span", { style: { fontSize: "12px", fontWeight: "600" } }, s.name), del)));
+  // ===== Table tab =====
+  if(tab==="table"){
+    const sec=h("div",{className:"section"});
+    const tw=h("div",{className:"table-wrap"});
+    const tbl=h("table");
+    const thead=h("thead");
+    const hr=h("tr");
+    hr.appendChild(h("th",{className:"fixed",style:{minWidth:"140px"}},h("span",{style:{fontSize:"11px",color:"#94a3b8",fontWeight:"400"}},"家電 ＼ 店舗")));
+
+    // Store columns (draggable)
+    S.stores.forEach((s,si)=>{
+      const grip=h("span",{className:"grip-h",draggable:"true",
+        onDragstart:e=>colDragStart(si,e),
+        onDragend:()=>colDragEnd(),
+        onTouchstart:e=>touchStart("col",si,e)
+      },iGripH());
+      const del=h("button",{className:"ib",onClick:()=>{S.stores=S.stores.filter(x=>x.id!==s.id);const np={};Object.entries(S.priceTable).forEach(([k,v])=>{const c={...v};delete c[s.id];np[k]=c;});S.priceTable=np;save();render();}},iTrash());
+      const thEl=h("th",{style:{minWidth:"100px"},"data-col-idx":si,
+        onDragover:e=>colDragOver(si,e),
+        onDragleave:e=>e.currentTarget.classList.remove("drag-over-left","drag-over-right"),
+        onDrop:()=>colDragEnd()
+      },
+        h("div",{style:{display:"flex",alignItems:"center",justifyContent:"center",gap:"4px",flexDirection:"column"}},
+          grip,
+          h("div",{style:{display:"flex",alignItems:"center",gap:"4px"}},h("span",{style:{fontSize:"12px",fontWeight:"600"}},s.name),del)
+        )
+      );
+      hr.appendChild(thEl);
     });
+
     // Add store
-    const nsI = h("input", { className: "mini-input", placeholder: "＋店舗", value: "" });
-    const nsBtn = h("button", { className: "ib add", onClick: () => { const n = nsI.value.trim(); if (!n) return; state.stores.push({ id: gid(), name: n }); saveState(); render(); } }, iPlus());
-    nsI.addEventListener("keydown", e => { if (e.key === "Enter") nsBtn.click(); });
-    hr.appendChild(h("th", { style: { minWidth: "80px" } }, h("div", { style: { display: "flex", alignItems: "center", gap: "4px" } }, nsI, nsBtn)));
-    thead.appendChild(hr);
-    tbl.appendChild(thead);
+    const nsI=h("input",{className:"mini-input",placeholder:"＋店舗",value:""});
+    const nsBtn=h("button",{className:"ib add",onClick:()=>{const n=nsI.value.trim();if(!n)return;S.stores.push({id:gid(),name:n});save();render();}},iPlus());
+    nsI.addEventListener("keydown",e=>{if(e.key==="Enter")nsBtn.click();});
+    hr.appendChild(h("th",{style:{minWidth:"80px"}},h("div",{style:{display:"flex",alignItems:"center",gap:"4px"}},nsI,nsBtn)));
+    thead.appendChild(hr);tbl.appendChild(thead);
 
-    // tbody
-    const tbody = h("tbody");
-    state.appliances.forEach(a => {
-      const tr = h("tr");
-      const best = bestP[a.id];
-      // Name cell
-      const cb = h("div", { className: "cb" + (a.checked ? " on" : ""), onClick: () => { a.checked = !a.checked; saveState(); render(); } }, a.checked ? iCheck() : null);
-      const del = h("button", { className: "ib", style: { marginLeft: "auto" }, onClick: () => { state.appliances = state.appliances.filter(x => x.id !== a.id); delete state.priceTable[a.id]; saveState(); render(); } }, iTrash());
-      const nm = h("span", { style: { fontWeight: "500", opacity: a.checked ? "1" : "0.4", textDecoration: a.checked ? "none" : "line-through" } }, a.name);
-      tr.appendChild(h("td", { className: "name" }, h("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, cb, nm, del)));
+    const tbody=h("tbody");
+    S.appliances.forEach((a,ai)=>{
+      const best=bestP[a.id];
+      const grip=h("span",{className:"grip",draggable:"true",
+        onDragstart:e=>rowDragStart("appliance",ai,e),
+        onDragend:()=>rowDragEnd("appliance"),
+        onTouchstart:e=>touchStart("appliance",ai,e)
+      },iGrip());
+      const cb=h("div",{className:"cb"+(a.checked?" on":""),onClick:()=>{a.checked=!a.checked;save();render();}},a.checked?iCheck():null);
+      const del=h("button",{className:"ib",style:{marginLeft:"auto"},onClick:()=>{S.appliances=S.appliances.filter(x=>x.id!==a.id);delete S.priceTable[a.id];save();render();}},iTrash());
+      const nm=h("span",{style:{fontWeight:"500",opacity:a.checked?"1":"0.4",textDecoration:a.checked?"none":"line-through"}},a.name);
+      const tr=h("tr",{"data-row-idx":ai,
+        onDragover:e=>rowDragOver(ai,e),
+        onDragleave:e=>{e.currentTarget.classList.remove("drag-over-top","drag-over-bottom");},
+        onDrop:()=>rowDragEnd("appliance")
+      });
+      tr.appendChild(h("td",{className:"name"},h("div",{style:{display:"flex",alignItems:"center",gap:"6px"}},grip,cb,nm,del)));
 
-      // Price cells
-      state.stores.forEach(s => {
-        const v = (state.priceTable[a.id] || {})[s.id] || "";
-        const isB = best && best.storeId === s.id;
-        const key = a.id + "-" + s.id;
-        const isE = editingCell === key;
-        const td = h("td", { className: "price" + (isB ? " best" : "") });
-        if (isE) {
-          const inp = h("input", { type: "number", className: "price-input", value: v || "", placeholder: "¥" });
-          inp.addEventListener("input", () => {
-            if (!state.priceTable[a.id]) state.priceTable[a.id] = {};
-            state.priceTable[a.id][s.id] = Number(inp.value) || "";
-            saveState();
-          });
-          inp.addEventListener("blur", () => { editingCell = null; render(); });
-          inp.addEventListener("keydown", e => { if (e.key === "Enter") { editingCell = null; render(); } });
-          td.appendChild(inp);
-          setTimeout(() => inp.focus(), 0);
-        } else {
-          td.addEventListener("click", () => { editingCell = key; render(); });
-          const sp = h("span", { className: "mono", style: { fontSize: "13px", color: v ? (isB ? "#16a34a" : "#334155") : "#cbd5e1", fontWeight: isB ? "600" : "400" } }, v ? yen(v) : "—");
-          td.appendChild(sp);
+      S.stores.forEach(s=>{
+        const v=(S.priceTable[a.id]||{})[s.id]||"";
+        const isB=best&&best.storeId===s.id;
+        const key=a.id+"-"+s.id;
+        const isE=editingCell===key;
+        const td=h("td",{className:"price"+(isB?" best":"")});
+        if(isE){
+          const inp=h("input",{type:"number",className:"price-input",value:v||"",placeholder:"¥"});
+          inp.addEventListener("input",()=>{if(!S.priceTable[a.id])S.priceTable[a.id]={};S.priceTable[a.id][s.id]=Number(inp.value)||"";save();});
+          inp.addEventListener("blur",()=>{editingCell=null;render();});
+          inp.addEventListener("keydown",e=>{if(e.key==="Enter"){editingCell=null;render();}});
+          td.appendChild(inp);setTimeout(()=>inp.focus(),0);
+        }else{
+          td.addEventListener("click",()=>{editingCell=key;render();});
+          td.appendChild(h("span",{className:"mono",style:{fontSize:"13px",color:v?(isB?"#16a34a":"#334155"):"#cbd5e1",fontWeight:isB?"600":"400"}},v?yen(v):"—"));
         }
         tr.appendChild(td);
       });
-      tr.appendChild(h("td", { className: "price" }));
+      tr.appendChild(h("td",{className:"price"}));
       tbody.appendChild(tr);
     });
 
-    // Add appliance row
-    const atr = h("tr", { className: "add-row" });
-    const naI = h("input", { className: "mini-input", style: { width: "120px" }, placeholder: "＋家電を追加..." });
-    const naBtn = h("button", { className: "ib add", onClick: () => { const n = naI.value.trim(); if (!n) return; state.appliances.push({ id: gid(), name: n, checked: true }); saveState(); render(); } }, iPlus());
-    naI.addEventListener("keydown", e => { if (e.key === "Enter") naBtn.click(); });
-    atr.appendChild(h("td", { className: "name", colSpan: state.stores.length + 2 }, h("div", { style: { display: "flex", alignItems: "center", gap: "6px" } }, naI, naBtn)));
-    tbody.appendChild(atr);
-    tbl.appendChild(tbody);
-    tw.appendChild(tbl);
-    sec.appendChild(tw);
-    sec.appendChild(h("p", { className: "note" }, "セルをタップして価格を入力 · 緑色＝最安店舗"));
+    const atr=h("tr",{className:"add-row"});
+    const naI=h("input",{className:"mini-input",style:{width:"120px"},placeholder:"＋家電を追加..."});
+    const naBtn=h("button",{className:"ib add",onClick:()=>{const n=naI.value.trim();if(!n)return;S.appliances.push({id:gid(),name:n,checked:true});save();render();}},iPlus());
+    naI.addEventListener("keydown",e=>{if(e.key==="Enter")naBtn.click();});
+    atr.appendChild(h("td",{className:"name",colSpan:S.stores.length+2},h("div",{style:{display:"flex",alignItems:"center",gap:"6px"}},naI,naBtn)));
+    tbody.appendChild(atr);tbl.appendChild(tbody);tw.appendChild(tbl);sec.appendChild(tw);
+    sec.appendChild(h("p",{className:"note"},"セルをタップして価格を入力 · 緑色＝最安店舗"));
     app.appendChild(sec);
   }
 
-  // Bundle tab
-  if (tab === "bundle") {
-    const sec = h("div", { className: "section" });
-    if (state.bundles.length === 0) {
-      sec.appendChild(h("div", { className: "empty" }, h("p", { style: { color: "#94a3b8", fontSize: "14px" } }, "まとめ売りセットがありません"), h("p", { style: { color: "#cbd5e1", fontSize: "12px", marginTop: "4px" } }, "複数家電のまとめ買い価格を設定できます")));
-    }
-    const list = h("div", { style: { display: "flex", flexDirection: "column", gap: "12px" } });
-    state.bundles.forEach(bun => {
-      const card = h("div", { className: "bundle-card" });
-      const nmI = h("input", { className: "b-name", value: bun.name, placeholder: "セット名" });
-      nmI.addEventListener("input", () => { bun.name = nmI.value; saveState(); });
-      const prI = h("input", { type: "number", className: "b-price", value: bun.price || "", placeholder: "セット価格" });
-      prI.addEventListener("input", () => { bun.price = Number(prI.value) || 0; saveState(); });
-      const del = h("button", { className: "ib", onClick: () => { state.bundles = state.bundles.filter(x => x.id !== bun.id); saveState(); render(); } }, iTrash());
-      card.appendChild(h("div", { className: "b-hdr" }, nmI, h("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, h("span", { style: { fontSize: "12px", color: "#64748b" } }, "¥"), prI, del)));
-
-      const items = h("div", { className: "b-items" });
-      bun.items.forEach(it => {
-        const sel = h("select", { className: "b-sel", value: it.applianceId });
-        sel.appendChild(h("option", { value: "__placeholder__" }, "仮置き"));
-        state.appliances.forEach(a => { const o = h("option", { value: a.id }, a.name); if (it.applianceId === a.id) o.selected = true; sel.appendChild(o); });
-        if (it.applianceId === "__placeholder__") sel.firstChild.selected = true;
-        sel.addEventListener("change", () => { it.applianceId = sel.value; saveState(); });
-        const rm = h("button", { className: "ib", onClick: () => { bun.items = bun.items.filter(x => x.id !== it.id); saveState(); render(); } }, iTrash());
-        items.appendChild(h("div", { className: "b-item" }, sel, rm));
+  // ===== Bundle tab =====
+  if(tab==="bundle"){
+    const sec=h("div",{className:"section"});
+    if(S.bundles.length===0)sec.appendChild(h("div",{className:"empty"},h("p",{style:{color:"#94a3b8",fontSize:"14px"}},"まとめ売りセットがありません"),h("p",{style:{color:"#cbd5e1",fontSize:"12px",marginTop:"4px"}},"複数家電のまとめ買い価格を設定できます")));
+    const list=h("div",{style:{display:"flex",flexDirection:"column",gap:"12px"}});
+    S.bundles.forEach((bun,bi)=>{
+      const card=h("div",{className:"bundle-card","data-bun-idx":bi,
+        onDragover:e=>{e.preventDefault();if(dragIdx===null||dragIdx===bi)return;dragOverIdx=bi;const rect=e.currentTarget.getBoundingClientRect();e.currentTarget.classList.remove("drag-over-top","drag-over-bottom");e.currentTarget.classList.add(e.clientY<rect.top+rect.height/2?"drag-over-top":"drag-over-bottom");},
+        onDragleave:e=>{e.currentTarget.classList.remove("drag-over-top","drag-over-bottom");},
+        onDrop:()=>rowDragEnd("bundle")
       });
-      items.appendChild(h("button", { className: "add-item-btn", onClick: () => { bun.items.push({ id: gid(), applianceId: "__placeholder__" }); saveState(); render(); } }, iPlus(), " 家電を追加"));
-      card.appendChild(items);
-      list.appendChild(card);
+      const grip=h("span",{className:"grip",draggable:"true",
+        onDragstart:e=>rowDragStart("bundle",bi,e),
+        onDragend:()=>rowDragEnd("bundle"),
+        onTouchstart:e=>touchStart("bundle",bi,e)
+      },iGrip());
+      const nmI=h("input",{className:"b-name",value:bun.name,placeholder:"セット名"});
+      nmI.addEventListener("input",()=>{bun.name=nmI.value;save();});
+      const prI=h("input",{type:"number",className:"b-price",value:bun.price||"",placeholder:"セット価格"});
+      prI.addEventListener("input",()=>{bun.price=Number(prI.value)||0;save();});
+      const del=h("button",{className:"ib",onClick:()=>{S.bundles=S.bundles.filter(x=>x.id!==bun.id);save();render();}},iTrash());
+      card.appendChild(h("div",{className:"b-hdr"},grip,nmI,h("div",{style:{display:"flex",alignItems:"center",gap:"8px"}},h("span",{style:{fontSize:"12px",color:"#64748b"}},"¥"),prI,del)));
+
+      const items=h("div",{className:"b-items"});
+      bun.items.forEach(it=>{
+        const sel=h("select",{className:"b-sel",value:it.applianceId});
+        sel.appendChild(h("option",{value:"__placeholder__"},"仮置き"));
+        S.appliances.forEach(a=>{const o=h("option",{value:a.id},a.name);if(it.applianceId===a.id)o.selected=true;sel.appendChild(o);});
+        if(it.applianceId==="__placeholder__")sel.firstChild.selected=true;
+        sel.addEventListener("change",()=>{it.applianceId=sel.value;save();});
+        const rm=h("button",{className:"ib",onClick:()=>{bun.items=bun.items.filter(x=>x.id!==it.id);save();render();}},iTrash());
+        items.appendChild(h("div",{className:"b-item"},sel,rm));
+      });
+      items.appendChild(h("button",{className:"add-item-btn",onClick:()=>{bun.items.push({id:gid(),applianceId:"__placeholder__"});save();render();}},iPlus()," 家電を追加"));
+      card.appendChild(items);list.appendChild(card);
     });
     sec.appendChild(list);
-    sec.appendChild(h("button", { className: "add-bundle-btn", onClick: () => { state.bundles.push({ id: gid(), name: "セット" + (state.bundles.length + 1), price: 0, items: [] }); saveState(); render(); } }, iPlus(), " セットを追加"));
+    sec.appendChild(h("button",{className:"add-bundle-btn",onClick:()=>{S.bundles.push({id:gid(),name:"セット"+(S.bundles.length+1),price:0,items:[]});save();render();}},iPlus()," セットを追加"));
     app.appendChild(sec);
   }
 
-  // Solve button
-  app.appendChild(h("button", { className: "solve-btn", onClick: () => { result = solve(); render(); } }, "最安の組み合わせを計算"));
+  // Solve
+  app.appendChild(h("button",{className:"solve-btn",onClick:()=>{result=solve_();render();}},"最安の組み合わせを計算"));
 
   // Result
-  if (result) {
-    const rc = h("div", { className: "result" });
-    const rhdr = h("div", { className: "r-hdr" }, h("span", { className: "r-lbl" }, "最安組み合わせ"));
-    if (result.total != null) rhdr.appendChild(h("span", { className: "r-tot" }, yen(result.total)));
+  if(result){
+    const rc=h("div",{className:"result"});
+    const rhdr=h("div",{className:"r-hdr"},h("span",{className:"r-lbl"},"最安組み合わせ"));
+    if(result.total!=null)rhdr.appendChild(h("span",{className:"r-tot"},yen(result.total)));
     rc.appendChild(rhdr);
-    if (result.uncovered.length > 0) rc.appendChild(h("div", { className: "r-warn" }, "価格未入力: " + result.uncovered.join("、")));
-    if (result.total == null && result.uncovered.length > 0) { /* noop */ }
-    else if (result.picks.length === 0 && result.total === 0) rc.appendChild(h("p", { style: { color: "#94a3b8", fontSize: "13px", padding: "8px 0" } }, "購入対象が選択されていません"));
-    else {
-      result.picks.forEach(p => {
-        const an = p.appIds.map(id => (state.appliances.find(a => a.id === id) || {}).name || "?");
-        const sn = p.type === "single" ? (state.stores.find(s => s.id === p.storeId) || {}).name : null;
-        const left = h("div", { style: { display: "flex", alignItems: "center", gap: "8px", flex: "1", minWidth: "0" } },
-          h("span", { className: "r-badge" }, p.type === "single" ? "単品" : "セット"),
-          h("span", { style: { fontSize: "13px", fontWeight: "500", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } },
-            p.type === "single" ? an[0] : (p.label || "セット"),
-            ...(sn ? [h("span", { style: { color: "#64748b", fontWeight: "400" } }, " — " + sn)] : []),
-            ...(p.type === "bundle" ? [h("span", { style: { color: "#64748b", fontWeight: "400" } }, " (" + an.join(", ") + ")")] : [])
+    if(result.uncovered.length>0)rc.appendChild(h("div",{className:"r-warn"},"価格未入力: "+result.uncovered.join("、")));
+    if(result.total==null&&result.uncovered.length>0){}
+    else if(result.picks.length===0&&result.total===0)rc.appendChild(h("p",{style:{color:"#94a3b8",fontSize:"13px",padding:"8px 0"}},"購入対象が選択されていません"));
+    else{result.picks.forEach(p=>{
+      const an=p.appIds.map(id=>(S.appliances.find(a=>a.id===id)||{}).name||"?");
+      const sn=p.type==="single"?(S.stores.find(s=>s.id===p.storeId)||{}).name:null;
+      rc.appendChild(h("div",{className:"r-row"},
+        h("div",{style:{display:"flex",alignItems:"center",gap:"8px",flex:"1",minWidth:"0"}},
+          h("span",{className:"r-badge"},p.type==="single"?"単品":"セット"),
+          h("span",{style:{fontSize:"13px",fontWeight:"500",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},
+            p.type==="single"?an[0]:(p.label||"セット"),
+            ...(sn?[h("span",{style:{color:"#64748b",fontWeight:"400"}}," — "+sn)]:[]),
+            ...(p.type==="bundle"?[h("span",{style:{color:"#64748b",fontWeight:"400"}}," ("+an.join(", ")+")")]:[])
           )
-        );
-        rc.appendChild(h("div", { className: "r-row" }, left, h("span", { className: "mono", style: { fontSize: "14px", fontWeight: "600", color: "#1e293b", flexShrink: "0" } }, yen(p.cost))));
-      });
-    }
+        ),
+        h("span",{className:"mono",style:{fontSize:"14px",fontWeight:"600",color:"#1e293b",flexShrink:"0"}},yen(p.cost))
+      ));
+    });}
     app.appendChild(rc);
   }
 
-  // Hidden file input
-  if (!document.getElementById("fimport")) {
-    const fi = h("input", { type: "file", id: "fimport", accept: ".json,application/json", style: { display: "none" } });
-    fi.addEventListener("change", doImport);
-    document.body.appendChild(fi);
-  }
+  // File input
+  if(!document.getElementById("fimport")){const fi=h("input",{type:"file",id:"fimport",accept:".json,application/json",style:{display:"none"}});fi.addEventListener("change",doImport);document.body.appendChild(fi);}
 
   // Share modal
-  if (shareModal) {
-    const bg = h("div", { className: "modal-bg", onClick: () => { shareModal = false; render(); } });
-    const box = h("div", { className: "modal-box", onClick: e => e.stopPropagation() },
-      h("h3", { style: { fontSize: "15px", fontWeight: "700", marginBottom: "8px" } }, "共有リンク"),
-      h("p", { style: { fontSize: "12px", color: "#64748b", marginBottom: "12px", lineHeight: "1.5" } }, "URLにデータが埋め込まれています。他の端末で開くとデータが復元されます。"),
-      h("div", { className: "modal-url" }, shareUrl),
-      h("div", { className: "modal-actions" },
-        h("button", { className: "modal-copy", onClick: copyShareUrl }, "URLをコピー"),
-        h("button", { className: "modal-close", onClick: () => { shareModal = false; render(); } }, "閉じる")
-      )
-    );
-    bg.appendChild(box);
+  document.querySelectorAll(".modal-bg").forEach(e=>e.remove());
+  if(shareModal){
+    const bg=h("div",{className:"modal-bg",onClick:()=>{shareModal=false;render();}});
+    bg.appendChild(h("div",{className:"modal-box",onClick:e=>e.stopPropagation()},
+      h("h3",{style:{fontSize:"15px",fontWeight:"700",marginBottom:"8px"}},"共有リンク"),
+      h("p",{style:{fontSize:"12px",color:"#64748b",marginBottom:"12px",lineHeight:"1.5"}},"URLにデータが埋め込まれています。他の端末で開くとデータが復元されます。"),
+      h("div",{className:"modal-url"},shareUrl),
+      h("div",{className:"modal-actions"},h("button",{className:"modal-copy",onClick:copyShareUrl},"URLをコピー"),h("button",{className:"modal-close",onClick:()=>{shareModal=false;render();}},"閉じる"))
+    ));
     document.body.appendChild(bg);
-  } else {
-    document.querySelectorAll(".modal-bg").forEach(e => e.remove());
   }
 }
 
 // Close menu on outside click
-document.addEventListener("pointerdown", e => {
-  if (menuOpen && !e.target.closest(".menu-wrap")) { menuOpen = false; render(); }
-});
+document.addEventListener("pointerdown",e=>{if(menuOpen&&!e.target.closest(".menu-wrap")){menuOpen=false;render();}});
 
 // Toast element
-const toastEl = document.createElement("div");
-toastEl.id = "toast"; toastEl.style.display = "none";
-document.body.appendChild(toastEl);
+const toastEl=document.createElement("div");toastEl.id="toast";toastEl.style.display="none";document.body.appendChild(toastEl);
 
 render();
 </script>
